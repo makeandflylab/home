@@ -1154,10 +1154,7 @@ const _origPickAnswer = pickAnswer;
 function pickAnswer(i) {
   _origPickAnswer(i);
 }
-// Override restartQuiz congratulations
-document.addEventListener('click', e => {
-  if(e.target && e.target.textContent && e.target.textContent.includes('Try Again')) { qi=0;score=0;renderQuiz(); }
-});
+
 // Fire on perfect score detection via MutationObserver
 const qObs = new MutationObserver(() => {
   const res = document.querySelector('.quiz-score');

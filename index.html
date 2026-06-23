@@ -824,38 +824,145 @@ iframe.yt-frame{width:100%;height:415px;border:none;display:none;}
   </div>
 </section>
 
-<!-- BOOKING FORM -->
+
+ <!-- BOOKING FORM -->
 <section id="booking" class="sec sec-white">
+
   <div class="reveal" style="text-align:center;">
     <div class="tag">📅 Book a Workshop</div>
     <h2>Reserve Your <span class="o">Date!</span></h2>
-    <p class="sub" style="margin:0 auto 1.8rem;text-align:center;">Fill in the form below and our team will confirm your workshop slot within 24 hours!</p>
+    <p class="sub" style="margin:0 auto 1.8rem;text-align:center;">
+      Fill in the form below and our team will confirm your workshop slot within 24 hours!
+    </p>
   </div>
-  <div id="bookForm" class="reveal">
+
+  <form id="bookingForm" class="reveal">
+
     <div class="book-grid">
-      <div class="book-field"><label>👤 Contact Name</label><input type="text" id="bkName" placeholder="Your full name"></div>
-      <div class="book-field"><label>🏫 Institution Name</label><input type="text" id="bkInstitution" placeholder="School / College / Organisation"></div>
-      <div class="book-field"><label>📧 Email Address</label><input type="email" id="bkEmail" placeholder="your@email.com"></div>
-      <div class="book-field"><label>📞 Phone / WhatsApp</label><input type="tel" id="bkPhone" placeholder="+91 XXXXX XXXXX"></div>
-      <div class="book-field"><label>📅 Preferred Date</label><input type="date" id="bkDate"></div>
-      <div class="book-field"><label>👥 Number of Students</label><input type="number" id="bkStudents" placeholder="e.g. 40" min="10"></div>
-      <div class="book-field"><label>🎒 Kit Preference</label>
-        <select id="bkKit"><option>Standard Balsa Kit</option><option>Premium Foam Kit</option><option>Competition Pro Kit</option></select>
+
+      <div class="book-field">
+        <label>👤 Contact Name</label>
+        <input type="text" name="contact_name" placeholder="Your full name" required>
       </div>
-      <div class="book-field"><label>📍 City / State</label><input type="text" id="bkCity" placeholder="e.g. Patna, Bihar"></div>
-      <div class="book-field book-full"><label>💬 Special Requirements</label><textarea id="bkNotes" rows="3" placeholder="Any special needs, accessibility requirements, or questions..."></textarea></div>
+
+      <div class="book-field">
+        <label>🏫 Institution Name</label>
+        <input type="text" name="institution_name" placeholder="School / College / Organisation" required>
+      </div>
+
+      <div class="book-field">
+        <label>📧 Email Address</label>
+        <input type="email" name="email" placeholder="your@email.com" required>
+      </div>
+
+      <div class="book-field">
+        <label>📞 Phone / WhatsApp</label>
+        <input type="tel" name="phone" placeholder="+91 XXXXX XXXXX" required>
+      </div>
+
+      <div class="book-field">
+        <label>📅 Preferred Date</label>
+        <input type="date" name="preferred_date" required>
+      </div>
+
+      <div class="book-field">
+        <label>👥 Number of Students</label>
+        <input type="number" name="students" placeholder="e.g. 40" min="10" required>
+      </div>
+
+      <div class="book-field">
+        <label>🎒 Kit Preference</label>
+        <select name="kit_preference" required>
+          <option value="Standard Balsa Kit">Standard Balsa Kit</option>
+          <option value="Premium Foam Kit">Premium Foam Kit</option>
+          <option value="Competition Pro Kit">Competition Pro Kit</option>
+        </select>
+      </div>
+
+      <div class="book-field">
+        <label>📍 City / State</label>
+        <input type="text" name="city_state" placeholder="e.g. Patna, Bihar" required>
+      </div>
+
+      <div class="book-field book-full">
+        <label>💬 Special Requirements</label>
+        <textarea
+          name="special_requirements"
+          rows="3"
+          placeholder="Any special needs, accessibility requirements, or questions..."></textarea>
+      </div>
+
     </div>
+
     <div style="text-align:center;">
-      <button class="btn-enroll" onclick="submitBooking()">Confirm Booking 🎯</button>
+      <button type="submit" class="btn-enroll">
+        Confirm Booking 🎯
+      </button>
     </div>
-  </div>
-  <div class="book-success" id="bookSuccess">
+
+  </form>
+
+  <div class="book-success" id="bookSuccess" style="display:none;">
     <div style="font-size:3rem;margin-bottom:0.5rem;">🎉</div>
     <h3>Booking Request Received!</h3>
-    <p>Thank you! Our team will contact you within 24 hours to confirm your workshop date. Get ready to fly! ✈</p>
+    <p>
+      Thank you! Our team will contact you within 24 hours to confirm your workshop date.
+      Get ready to fly! ✈
+    </p>
   </div>
+
 </section>
 
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+
+  const bookingForm = document.getElementById("bookingForm");
+  const successBox = document.getElementById("bookSuccess");
+
+  bookingForm.addEventListener("submit", async function(e) {
+
+    e.preventDefault();
+
+    const formData = new FormData(bookingForm);
+
+    try {
+
+      const response = await fetch("https://formspree.io/f/xnjknlgl", {
+        method: "POST",
+        body: formData,
+        headers: {
+          "Accept": "application/json"
+        }
+      });
+
+      if (response.ok) {
+
+        bookingForm.style.display = "none";
+        successBox.style.display = "block";
+        bookingForm.reset();
+
+        successBox.scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
+
+      } else {
+
+        alert("Sorry, something went wrong. Please try again.");
+
+      }
+
+    } catch (error) {
+
+      alert("Network error. Please check your internet connection.");
+
+    }
+
+  });
+
+});
+</script>
+   
 <!-- LEADERBOARD -->
 <section id="leaderboard" class="sec sec-yellow">
   <div class="reveal" style="text-align:center;">
@@ -875,6 +982,8 @@ iframe.yt-frame{width:100%;height:415px;border:none;display:none;}
   </div>
 </section>
 
+    
+  
 <!-- BLOG -->
 <section id="blog" class="sec sec-white">
   <div class="reveal">
@@ -973,22 +1082,66 @@ iframe.yt-frame{width:100%;height:415px;border:none;display:none;}
 </section>
 
 <!-- ENROLL -->
-<section id="enroll">
-  <div class="reveal">
-    <div class="tag">✉ Register Interest</div>
-    <h2>Ready to <span class="o">Fly?</span> ✈</h2>
-    <p class="sub" style="margin:0 auto 2rem;text-align:center;">Tell us about your school and we'll respond within 24 hours — completely free!</p>
-    <div class="enroll-form">
-      <input type="text" placeholder="Your Name / Institution">
-      <input type="email" placeholder="Email Address">
-      <select><option value="" disabled selected>I represent…</option><option>A School</option><option>A College / University</option><option>An Aeromodelling Lab / Club</option><option>A Summer Camp / NGO</option><option>An Individual Student</option><option>A Government / Govt. Body</option></select>
-      <input type="tel" placeholder="Phone Number">
-    </div>
-    <a href="/cdn-cgi/l/email-protection#553d3039393a1538343e30343b3133392c7b3c3b" class="btn-enroll">Send Enquiry ✈</a>
-    <p class="note">✦ No commitment required &nbsp;·&nbsp; Response within 24 hours ✦</p>
-  </div>
-</section>
 
+<section id="enroll">
+
+  <div class="reveal">
+
+    <div class="tag">✉ Register Interest</div>
+
+    <h2>Ready to <span class="o">Fly?</span> ✈</h2>
+
+    <p class="sub" style="margin:0 auto 2rem;text-align:center;">
+      Tell us about your school and we'll respond within 24 hours — completely free!
+    </p>
+
+    <form action="https://formspree.io/f/mbdvlyla" method="POST">
+
+      <div class="enroll-form">
+
+        <input
+          type="text"
+          name="name"
+          placeholder="Your Name / Institution"
+          required>
+
+        <input
+          type="email"
+          name="email"
+          placeholder="Email Address"
+          required>
+
+        <select name="representing" required>
+          <option value="" disabled selected>I represent…</option>
+          <option>A School</option>
+          <option>A College / University</option>
+          <option>An Aeromodelling Lab / Club</option>
+          <option>A Summer Camp / NGO</option>
+          <option>An Individual Student</option>
+          <option>A Government / Govt. Body</option>
+        </select>
+
+        <input
+          type="tel"
+          name="phone"
+          placeholder="Phone Number"
+          required>
+
+      </div>
+
+      <button type="submit" class="btn-enroll">
+        Send Enquiry ✈
+      </button>
+
+    </form>
+
+    <p class="note">
+      ✦ No commitment required &nbsp;·&nbsp; Response within 24 hours ✦
+    </p>
+
+  </div>
+
+</section>
 <!-- CONTACT -->
 <section id="contact" class="sec sec-white">
   <div class="two-col">
@@ -996,7 +1149,7 @@ iframe.yt-frame{width:100%;height:415px;border:none;display:none;}
       <div class="tag">📍 Contact Us</div>
       <h2>Let's Talk <span class="o">Flight!</span></h2>
       <p class="sub">Questions about programs, kits, or lab setup? Reach out anytime!</p>
-      <div class="c-item"><div class="c-ico">📧</div><div><div class="c-lbl">Email</div><div class="c-val"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b3dbd6dfdfdcf3ded2d8d6d2ddd7d5dfca9ddadd">makeandflylab&#160;@gmail.com </a><br><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2e4b4a5b4d4f5a4741406e434f454b4f404a484257004740"></a></div></div></div>
+      <div class="c-item"><div class="c-ico">📧</div><div><div class="c-lbl">Email</div><div class="c-val"><a>makeandflylab@gmail.com </a><br><a></a></div></div></div>
       <div class="c-item"><div class="c-ico">📞</div><div><div class="c-lbl">Phone / WhatsApp</div><div class="c-val">+91 91132 67458</div></div></div>
       <div class="c-item"><div class="c-ico">📍</div><div><div class="c-lbl">Location</div><div class="c-val">Nirmali Bihar, India<br>Pan-India Workshop Delivery</div></div></div>
       <div class="c-item"><div class="c-ico">🕐</div><div><div class="c-lbl">Hours</div><div class="c-val">Mon – Sat, 9am – 6pm IST</div></div></div>
